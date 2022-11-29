@@ -1,7 +1,7 @@
 package adventofcode
 
 import (
-	"fmt"
+	"log"
 	"sync"
 )
 
@@ -40,10 +40,10 @@ func (puzzle *Puzzle) SolveParts() (PuzzleAnswer, PuzzleAnswer) {
 
 func (answer *PuzzleAnswer) PrintResults(day int64) {
 	if answer.err != nil {
-		fmt.Printf("❌ d%dp%d Error: %s\n", day, answer.part, answer.err.Error())
+		log.Printf("❌ d%dp%d Error: %s\n", day, answer.part, answer.err.Error())
 	}
 
 	if answer.answer != "" {
-		fmt.Printf("✅ d%dp%d Answer: %s\n", day, answer.part, answer.answer)
+		log.Printf("✅ d%dp%d Answer: %s\n", day, answer.part, answer.answer)
 	}
 }
