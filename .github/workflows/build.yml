@@ -19,6 +19,9 @@ jobs:
       with:
         go-version-file: 'go.mod'
         cache: true
+    - uses: dominikh/staticcheck-action@v1.2.0
+      with:
+        install-go: false
 
     - name: Install dependencies, check the files, and run it
       run: make dep all run
