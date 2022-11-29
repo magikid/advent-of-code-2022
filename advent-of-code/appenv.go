@@ -1,9 +1,11 @@
 package adventofcode
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"regexp"
 	"strconv"
@@ -45,6 +47,7 @@ func (app *appEnv) run() error {
 
 	puzzleInputMatcher := regexp.MustCompile(`day(\d+)`)
 	wg := sync.WaitGroup{}
+	inputFileCount := 0
 
 	for _, entry := range entries {
 		if entry.Type().IsRegular() && puzzleInputMatcher.MatchString(entry.Name()) {
@@ -56,9 +59,16 @@ func (app *appEnv) run() error {
 			}
 
 			puzzle := Puzzle{currentDay, puzzleInput}
+			inputFileCount++
 			wg.Add(1)
 			go puzzle.Solve(&wg)
+		} else {
+			log.Printf("Input file %s does not match pattern day(\\d+), skipping", entry.Name())
 		}
+	}
+
+	if inputFileCount == 0 {
+		return errors.New("no input files found in inputs/ directory")
 	}
 
 	wg.Wait()

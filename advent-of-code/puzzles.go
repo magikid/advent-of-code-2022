@@ -30,6 +30,9 @@ func (puzzle *Puzzle) Solve(wg *sync.WaitGroup) {
 
 func (puzzle *Puzzle) SolveParts() (PuzzleAnswer, PuzzleAnswer) {
 	switch puzzle.day {
+	case 1:
+		puzzle := Day1{&puzzle.input}
+		return puzzle.parts()
 	default:
 		return PuzzleAnswer{}, PuzzleAnswer{}
 	}
