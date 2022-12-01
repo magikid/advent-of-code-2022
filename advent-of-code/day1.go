@@ -1,8 +1,8 @@
 package adventofcode
 
 import (
-	"errors"
 	"fmt"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -42,21 +42,25 @@ func (day1 *Day1) parts() (PuzzleAnswer, PuzzleAnswer) {
 func (day1 *Day1) part1() PuzzleAnswer {
 	var ans PuzzleAnswer
 	ans.part = 1
-	maxPack := 0
-	pack := Pack{}
+	currentPack := Pack{}
+	packs := []Pack{currentPack}
 	lines := strings.Split(*day1.input, "\n")
 
 	for _, line := range lines {
 		if len(line) == 0 {
-			if pack.calculateTotalCalories() > maxPack {
-				maxPack = pack.totalCalories
-			}
-			pack = Pack{}
+			currentPack.calculateTotalCalories()
+			packs = append(packs, currentPack)
+			currentPack = Pack{}
 		}
 		calories, _ := strconv.Atoi(line)
-		pack.addFood(calories)
+		currentPack.addFood(calories)
 	}
-	ans.answer = fmt.Sprint(maxPack)
+
+	sort.Slice(packs, func(p, q int) bool {
+		return packs[p].totalCalories > packs[q].totalCalories
+	})
+
+	ans.answer = fmt.Sprint(packs[0].totalCalories)
 
 	return ans
 }
@@ -64,7 +68,25 @@ func (day1 *Day1) part1() PuzzleAnswer {
 func (day1 *Day1) part2() PuzzleAnswer {
 	var ans PuzzleAnswer
 	ans.part = 2
-	ans.err = errors.New("not implemented")
+	currentPack := Pack{}
+	packs := []Pack{currentPack}
+	lines := strings.Split(*day1.input, "\n")
+
+	for _, line := range lines {
+		if len(line) == 0 {
+			currentPack.calculateTotalCalories()
+			packs = append(packs, currentPack)
+			currentPack = Pack{}
+		}
+		calories, _ := strconv.Atoi(line)
+		currentPack.addFood(calories)
+	}
+
+	sort.Slice(packs, func(p, q int) bool {
+		return packs[p].totalCalories > packs[q].totalCalories
+	})
+
+	ans.answer = fmt.Sprintf("Calories: %d + %d + %d = %d", packs[0].totalCalories, packs[1].totalCalories, packs[2].totalCalories, packs[0].totalCalories+packs[1].totalCalories+packs[2].totalCalories)
 
 	return ans
 }
