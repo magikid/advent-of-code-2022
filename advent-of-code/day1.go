@@ -36,7 +36,6 @@ func (p *Pack) calculateTotalCalories() int {
 
 func (day1 *Day1) parts() (PuzzleAnswer, PuzzleAnswer) {
 	return day1.part1(), day1.part2()
-
 }
 
 func (day1 *Day1) part1() PuzzleAnswer {
