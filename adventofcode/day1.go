@@ -5,33 +5,12 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"hilandchris.com/aoc2022/adventofcode/elfitems"
 )
 
 type Day1 struct {
 	input *string
-}
-
-type Pack struct {
-	snackCalories []int
-	totalCalories int
-}
-
-func (p *Pack) addFood(calories int) {
-	p.snackCalories = append(p.snackCalories, calories)
-}
-
-func (p *Pack) calculateTotalCalories() int {
-	if p.totalCalories != 0 {
-		return p.totalCalories
-	}
-
-	totalCalories := 0
-	for _, calorieCount := range p.snackCalories {
-		totalCalories += calorieCount
-	}
-	p.totalCalories = totalCalories
-
-	return p.totalCalories
 }
 
 func (day1 *Day1) parts() (PuzzleAnswer, PuzzleAnswer) {
@@ -41,25 +20,23 @@ func (day1 *Day1) parts() (PuzzleAnswer, PuzzleAnswer) {
 func (day1 *Day1) part1() PuzzleAnswer {
 	var ans PuzzleAnswer
 	ans.part = 1
-	currentPack := Pack{}
-	packs := []Pack{currentPack}
+	currentPack := elfitems.Pack{}
+	packs := elfitems.Packs{currentPack}
 	lines := strings.Split(*day1.input, "\n")
 
 	for _, line := range lines {
 		if len(line) == 0 {
-			currentPack.calculateTotalCalories()
+			currentPack.CalculateTotalCalories()
 			packs = append(packs, currentPack)
-			currentPack = Pack{}
+			currentPack = elfitems.Pack{}
 		}
 		calories, _ := strconv.Atoi(line)
-		currentPack.addFood(calories)
+		currentPack.AddCalories(calories)
 	}
 
-	sort.Slice(packs, func(p, q int) bool {
-		return packs[p].totalCalories > packs[q].totalCalories
-	})
+	sort.Sort(packs)
 
-	ans.answer = fmt.Sprint(packs[0].totalCalories)
+	ans.answer = fmt.Sprint(packs[0].CalculateTotalCalories())
 
 	return ans
 }
@@ -67,25 +44,25 @@ func (day1 *Day1) part1() PuzzleAnswer {
 func (day1 *Day1) part2() PuzzleAnswer {
 	var ans PuzzleAnswer
 	ans.part = 2
-	currentPack := Pack{}
-	packs := []Pack{currentPack}
+	currentPack := elfitems.Pack{}
+	packs := elfitems.Packs{currentPack}
 	lines := strings.Split(*day1.input, "\n")
 
 	for _, line := range lines {
 		if len(line) == 0 {
-			currentPack.calculateTotalCalories()
+			currentPack.CalculateTotalCalories()
 			packs = append(packs, currentPack)
-			currentPack = Pack{}
+			currentPack = elfitems.Pack{}
 		}
 		calories, _ := strconv.Atoi(line)
-		currentPack.addFood(calories)
+		currentPack.AddCalories(calories)
 	}
 
 	sort.Slice(packs, func(p, q int) bool {
-		return packs[p].totalCalories > packs[q].totalCalories
+		return packs[p].CalculateTotalCalories() > packs[q].CalculateTotalCalories()
 	})
 
-	ans.answer = fmt.Sprintf("Calories: %d + %d + %d = %d", packs[0].totalCalories, packs[1].totalCalories, packs[2].totalCalories, packs[0].totalCalories+packs[1].totalCalories+packs[2].totalCalories)
+	ans.answer = fmt.Sprintf("Calories: %d + %d + %d = %d", packs[0].CalculateTotalCalories(), packs[1].CalculateTotalCalories(), packs[2].CalculateTotalCalories(), packs[0].CalculateTotalCalories()+packs[1].CalculateTotalCalories()+packs[2].CalculateTotalCalories())
 
 	return ans
 }
