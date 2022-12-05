@@ -1,7 +1,6 @@
 package adventofcode
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -17,7 +16,7 @@ func (day2 *Day2) parts() (PuzzleAnswer, PuzzleAnswer) {
 
 func (d *Day2) part1() PuzzleAnswer {
 	lines := strings.Split(*d.input, "\n")
-	strats := parseStrategies(lines)
+	strats := parseStrategies(lines, parseStrategyPart1)
 	totalScore := 0
 	for _, strat := range strats {
 		totalScore += strat.scoreGame()
@@ -30,23 +29,33 @@ func (d *Day2) part1() PuzzleAnswer {
 }
 
 func (d *Day2) part2() PuzzleAnswer {
-	return PuzzleAnswer{part: 2, err: errors.New("not implemented")}
+	lines := strings.Split(*d.input, "\n")
+	strats := parseStrategies(lines, parseStrategyPart2)
+	totalScore := 0
+	for _, strat := range strats {
+		totalScore += strat.scoreGame()
+	}
+
+	puzzAns := PuzzleAnswer{part: 2}
+	puzzAns.answer = fmt.Sprint(totalScore)
+
+	return puzzAns
 }
 
-func parseStrategies(lines []string) []RockPaperScissorsGame {
+func parseStrategies(lines []string, parseStrategy func(string) RockPaperScissorsGame) []RockPaperScissorsGame {
 	games := make([]RockPaperScissorsGame, len(lines)-1)
 	for i, line := range lines {
 		if line == "" {
 			log.Printf("Skipping line number: %d", i)
 			continue
 		}
-		games[i] = parseLine(line)
+		games[i] = parseStrategy(line)
 	}
 
 	return games
 }
 
-func parseLine(line string) RockPaperScissorsGame {
+func parseStrategyPart1(line string) RockPaperScissorsGame {
 	moves := strings.Split(line, " ")
 	opponentRawMove := moves[0]
 	opponentMove := Rock
@@ -67,6 +76,48 @@ func parseLine(line string) RockPaperScissorsGame {
 		myMove = Paper
 	case "Z":
 		myMove = Scissors
+	}
+
+	return RockPaperScissorsGame{myMove: myMove, opponentMove: opponentMove}
+}
+
+func parseStrategyPart2(line string) RockPaperScissorsGame {
+	moves := strings.Split(line, " ")
+	opponentRawMove := moves[0]
+	gameOutcome := moves[1]
+	opponentMove := Rock
+	myMove := Rock
+	switch opponentRawMove {
+	case "A":
+		opponentMove = Rock
+		switch gameOutcome {
+		case "X":
+			myMove = Scissors
+		case "Y":
+			myMove = Rock
+		case "Z":
+			myMove = Paper
+		}
+	case "B":
+		opponentMove = Paper
+		switch gameOutcome {
+		case "X":
+			myMove = Rock
+		case "Y":
+			myMove = Paper
+		case "Z":
+			myMove = Scissors
+		}
+	case "C":
+		opponentMove = Scissors
+		switch gameOutcome {
+		case "X":
+			myMove = Paper
+		case "Y":
+			myMove = Scissors
+		case "Z":
+			myMove = Rock
+		}
 	}
 
 	return RockPaperScissorsGame{myMove: myMove, opponentMove: opponentMove}
