@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	adventofcode "hilandchris.com/aoc2022/advent-of-code"
+	adventofcode "hilandchris.com/aoc2022/adventofcode"
 )
 
 func main() {

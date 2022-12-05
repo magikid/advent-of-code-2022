@@ -26,7 +26,7 @@ func (app appEnv) String() string {
 }
 
 func (app *appEnv) fromArgs(args []string) error {
-	fl := flag.NewFlagSet("advent-of-code", flag.ContinueOnError)
+	fl := flag.NewFlagSet("adventofcode", flag.ContinueOnError)
 	fl.IntVar(&app.day, "day", AllDays, "Which day should be run?")
 	fl.IntVar(&app.part, "part", AllParts, "Which part of the given day should be run?")
 	fl.StringVar(&app.puzzleInputPath, "path", "inputs", "The path to the puzzle inputs")
