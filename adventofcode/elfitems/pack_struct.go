@@ -10,4 +10,3 @@ type Pack struct {
 
 type PackItems []PackItem
 type PackItem string
-type PackItemPriority int

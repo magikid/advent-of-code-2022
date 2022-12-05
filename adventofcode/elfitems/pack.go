@@ -48,11 +48,16 @@ func (p *Pack) findDuplicateItemTypes() PackItem {
 func (p *Pack) calculateDuplicateItemPriority() int {
 	firstRuneInPackItem := []rune(p.findDuplicateItemTypes())[0]
 
+	return PackItemPriority(firstRuneInPackItem)
+}
+
+func PackItemPriority(item rune) int {
+
 	var asciiCodeOfDuplicate rune
-	if !unicode.IsUpper(firstRuneInPackItem) {
-		asciiCodeOfDuplicate = firstRuneInPackItem - 96
+	if !unicode.IsUpper(item) {
+		asciiCodeOfDuplicate = item - 96
 	} else {
-		asciiCodeOfDuplicate = firstRuneInPackItem - 38
+		asciiCodeOfDuplicate = item - 38
 	}
 
 	return int(asciiCodeOfDuplicate)
