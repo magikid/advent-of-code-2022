@@ -1,6 +1,10 @@
 package adventofcode
 
-import "errors"
+import (
+	"fmt"
+
+	"hilandchris.com/aoc2022/adventofcode/comms"
+)
 
 type Day6 struct {
 	input *string
@@ -11,9 +15,17 @@ func (day6 *Day6) parts() (PuzzleAnswer, PuzzleAnswer) {
 }
 
 func (d *Day6) part1() PuzzleAnswer {
-	return PuzzleAnswer{part: 1, err: errors.New("not implemented")}
+	pa := PuzzleAnswer{part: 1}
+	datastream := comms.Datastream{DatastreamBuffer: *d.input}
+	pa.answer = fmt.Sprint(datastream.StartOfPacketMarkerLocation())
+
+	return pa
 }
 
 func (d *Day6) part2() PuzzleAnswer {
-	return PuzzleAnswer{part: 2, err: errors.New("not implemented")}
+	pa := PuzzleAnswer{part: 2}
+	datastream := comms.Datastream{DatastreamBuffer: *d.input}
+	pa.answer = fmt.Sprint(datastream.StartOfMessageMarkerLocation())
+
+	return pa
 }
