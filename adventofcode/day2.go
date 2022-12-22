@@ -2,7 +2,6 @@ package adventofcode
 
 import (
 	"fmt"
-	"log"
 	"strings"
 )
 
@@ -46,7 +45,6 @@ func parseStrategies(lines []string, parseStrategy func(string) RockPaperScissor
 	games := make([]RockPaperScissorsGame, len(lines)-1)
 	for i, line := range lines {
 		if line == "" {
-			log.Printf("Skipping line number: %d", i)
 			continue
 		}
 		games[i] = parseStrategy(line)

@@ -121,17 +121,6 @@ func (stack Stack) popN(n int) ([]Crate, Stack) {
 	return crates, stack
 }
 
-func reverse(crates []Crate) []Crate {
-	output := make([]Crate, len(crates))
-
-	for i, crate := range crates {
-		j := len(crates) - i - 1
-		output[j] = crate
-	}
-
-	return output
-}
-
 func (stack Stack) push(crate Crate) Stack {
 	stack = append(stack, crate)
 	return stack
